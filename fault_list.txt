@@ -1,0 +1,380 @@
+fault_dictionary = {
+    "STBY GAIN": {
+        "TEST Number": "14",
+        "Category": "FLCS WARNING",
+        "CAUSE": "Dual Air Data failure",
+        "SYMPTOMS": "FLCS in Standby Gains",
+        "CORRECTIVE ACTIONS": "FLCS RESET - Land ASAP"
+    },
+    "FLCS DUAL FAIL": {
+        "TEST Number": "21",
+        "Category": "FLCS WARNING",
+        "CAUSE": "FLCS electronics, sensor or power failure",
+        "SYMPTOMS": "None",
+        "CORRECTIVE ACTIONS": "Not yet implemented"
+    },
+    "FLCS LEF LOCK": {
+        "TEST Number": "43",
+        "Category": "FLCS WARNING",
+        "CAUSE": "LEFs locked or damaged",
+        "SYMPTOMS": "Possible asymmetry",
+        "CORRECTIVE ACTIONS": "Check FLCS panel LEF switch - FLCS reset"
+    },
+    "FLCS AP FAIL": {
+        "TEST Number": "50",
+        "Category": "FLCS WARNING",
+        "CAUSE": "Autopilot has failed",
+        "SYMPTOMS": "Autopilot unavailable",
+        "CORRECTIVE ACTIONS": "Do not use Autopilot"
+    },
+    "FLCS BIT FAIL": {
+        "TEST Number": "55",
+        "Category": "FLCS WARNING",
+        "CAUSE": "Failed FLCS BIT",
+        "SYMPTOMS": "Fault only on ground",
+        "CORRECTIVE ACTIONS": "Not resettable through FLCS reset - rerun FLCS BIT again"
+    },
+    "SWIM ATTD FAIL": {
+        "TEST Number": "75",
+        "Category": "FLCS WARNING",
+        "CAUSE": "INS attitude estimator failure",
+        "SYMPTOMS": "TFR Auto fly-up",
+        "CORRECTIVE ACTIONS": "Discontinue TFR ops - Refer to TFR failure"
+    },
+    "SWIM SCP FAIL": {
+        "TEST Number": "79",
+        "Category": "FLCS WARNING",
+        "CAUSE": "N/A",
+        "SYMPTOMS": "TFR Auto fly-up",
+        "CORRECTIVE ACTIONS": "Discontinue TFR ops - Refer to TFR failure"
+    },
+    "SWIM NVP FAIL": {
+        "TEST Number": "76",
+        "Category": "FLCS WARNING",
+        "CAUSE": "Navigation pod self-mode failure",
+        "SYMPTOMS": "TFR Auto fly-up",
+        "CORRECTIVE ACTIONS": "Discontinue TFR ops - Refer to TFR failure"
+    },
+    "SWIM RALT FAIL": {
+        "TEST Number": "80",
+        "Category": "FLCS WARNING",
+        "CAUSE": "SDC monitor failure or CARA data bad",
+        "SYMPTOMS": "TFR Auto fly-up",
+        "CORRECTIVE ACTIONS": "Discontinue TFR ops - Refer to TFR failure"
+    },
+    "FLCS ADC FAIL": {
+        "TEST Number": "13",
+        "Category": "FLCS CAUTION",
+        "CAUSE": "Air data input signal failure",
+        "SYMPTOMS": "Second ADC fail triggers STBY GAINS and latches ADC fail against FLCS RESET attempt",
+        "CORRECTIVE ACTIONS": "FLCS RESET - Land ASAP"
+    },
+    "ISA RUD FAIL": {
+        "TEST Number": "34",
+        "Category": "FLCS CAUTION",
+        "CAUSE": "Rudder servo actuators malfunction",
+        "SYMPTOMS": "Rudder problems",
+        "CORRECTIVE ACTIONS": "FLCS RESET - Land ASAP"
+    },
+    "ISA ALL FAIL": {
+        "TEST Number": "36",
+        "Category": "FLCS CAUTION",
+        "CAUSE": "Controls servo actuators malfunction",
+        "SYMPTOMS": "Flight control problems",
+        "CORRECTIVE ACTIONS": "FLCS RESET - Land ASAP"
+    },
+    "FLCS HOT TEMP": {
+        "TEST Number": "48",
+        "Category": "FLCS CAUTION",
+        "CAUSE": "Excess temperature in FLCS branches",
+        "SYMPTOMS": "None",
+        "CORRECTIVE ACTIONS": "Not yet implemented"
+    },
+    "FLCS SNGL FAIL": {
+        "TEST Number": "49",
+        "Category": "FLCS CAUTION",
+        "CAUSE": "Single electronic or sensor failure",
+        "SYMPTOMS": "Second failure triggers DUAL FAIL",
+        "CORRECTIVE ACTIONS": "FLCS RESET - Land ASAP"
+    },
+    "FLCS BUS FAIL": {
+        "TEST Number": "3",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "FLCS System failure",
+        "SYMPTOMS": "Illuminates AVIONICS FAULT light instead of FLCS FAULT light. Can't use PFLD to review FLCS fault; use MFD TEST page",
+        "CORRECTIVE ACTIONS": "N/A"
+    },
+    "FMS FAIL": {
+        "TEST Number": "4",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Fuel Management system failure",
+        "SYMPTOMS": "Fuel bingo capability degraded",
+        "CORRECTIVE ACTIONS": "Monitor Fuel situation closely"
+    },
+    "HUD BUS FAIL": {
+        "TEST Number": "3",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "HUD system failure",
+        "SYMPTOMS": "No HUD",
+        "CORRECTIVE ACTIONS": "RTB"
+    },
+    "HMCS LBUS FAIL": {
+        "TEST Number": "3",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Left Bus HMCS failure",
+        "SYMPTOMS": "Loss of HMCS",
+        "CORRECTIVE ACTIONS": "Pilot discretion"
+    },
+    "HMCS RBUS FAIL": {
+        "TEST Number": "6",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Right Bus HMCS failure",
+        "SYMPTOMS": "Loss of HMCS",
+        "CORRECTIVE ACTIONS": "Pilot discretion"
+    },
+    "HMCS TEMP FAIL": {
+        "TEST Number": "20",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Overheat of the HMCS system",
+        "SYMPTOMS": "HMCS will shutdown",
+        "CORRECTIVE ACTIONS": "Pilot discretion"
+    },
+    "RALT BUS FAIL": {
+        "TEST Number": "3",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Radar Altitude system failure",
+        "SYMPTOMS": "No Radar Altimeter",
+        "CORRECTIVE ACTIONS": "Pilot discretion"
+    },
+    "FCC FAIL": {
+        "TEST Number": "4",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "FCC Failure",
+        "SYMPTOMS": "Fire Control Computer non-operational",
+        "CORRECTIVE ACTIONS": "Discontinue offensive operations"
+    },
+    "FCC TEMP": {
+        "TEST Number": "132",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Overheat of the FCC system",
+        "SYMPTOMS": "Possible damage if not shut off",
+        "CORRECTIVE ACTIONS": "Shut off FCC, check AIR SOURCE knob position"
+    },
+    "FCR BUS FAIL": {
+        "TEST Number": "3",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "FCR Failure",
+        "SYMPTOMS": "FCR non-operational",
+        "CORRECTIVE ACTIONS": "Discontinue offensive operations"
+    },
+    "FCR XMTR FAIL": {
+        "TEST Number": "94",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "FCR transmit operation failure",
+        "SYMPTOMS": "FCR not emitting",
+        "CORRECTIVE ACTIONS": "Discontinue offensive operations"
+    },
+    "BLKR BUS FAIL": {
+        "TEST Number": "3",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "RWR system failure",
+        "SYMPTOMS": "RWR is blind",
+        "CORRECTIVE ACTIONS": "Discontinue offensive operations"
+    },
+    "DLNK FAIL": {
+        "TEST Number": "5",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Datalink system failure",
+        "SYMPTOMS": "Datalink non-operational",
+        "CORRECTIVE ACTIONS": "Pilot discretion"
+    },
+    "UFC BUS FAIL": {
+        "TEST Number": "3",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "UFC system failure",
+        "SYMPTOMS": "DED and PFLD non-operational",
+        "CORRECTIVE ACTIONS": "Reset UFC"
+    },
+    "UFC TEMP": {
+        "TEST Number": "42",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Overheat of the UFC system",
+        "SYMPTOMS": "Possible damage if not shut off",
+        "CORRECTIVE ACTIONS": "Shut off FCC, check AIR SOURCE knob position"
+    },
+    "AMUX BUS FAIL": {
+        "TEST Number": "3",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "AMUX BUS failure",
+        "SYMPTOMS": "FCC is forced to NAV",
+        "CORRECTIVE ACTIONS": "Discontinue offensive operations"
+    },
+    "BMUX BUS FAIL": {
+        "TEST Number": "3",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "BMUX BUS failure",
+        "SYMPTOMS": "FCC is forced to NAV",
+        "CORRECTIVE ACTIONS": "Discontinue offensive operations"
+    },
+    "DMUX BUS FAIL": {
+        "TEST Number": "3",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "DMUX BUS failure",
+        "SYMPTOMS": "HUD, HMS, MFDs non-operational",
+        "CORRECTIVE ACTIONS": "Pilot discretion"
+    },
+    "CADC BUS FAIL": {
+        "TEST Number": "3",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Loss of CADC parameters to avionics system",
+        "SYMPTOMS": "No Airdata Available",
+        "CORRECTIVE ACTIONS": "Pilot discretion"
+    },
+    "EPOD SLNT DEGR": {
+        "TEST Number": "60",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "ECM system failure",
+        "SYMPTOMS": "ECM non-operational",
+        "CORRECTIVE ACTIONS": "Discontinue offensive operations"
+    },
+    "CMDS BUS FAIL": {
+        "TEST Number": "3",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "CMDS bus failure",
+        "SYMPTOMS": "CMDS non-operational",
+        "CORRECTIVE ACTIONS": "Discontinue offensive operations"
+    },
+    "SMS STA3 FAIL": {
+        "TEST Number": "89",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Station 3 Remote interface failed",
+        "SYMPTOMS": "Station operation inhibited",
+        "CORRECTIVE ACTIONS": "Discontinue offensive operations"
+    },
+    "SMS STA4 DEGR": {
+        "TEST Number": "106",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Station 4 Remote interface degraded",
+        "SYMPTOMS": "Command not executed correctly",
+        "CORRECTIVE ACTIONS": "Left wing tank pylon - monitor fuel"
+    },
+    "SMS STA4 FAIL": {
+        "TEST Number": "90",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Station 4 Remote interface failed",
+        "SYMPTOMS": "Station operation inhibited",
+        "CORRECTIVE ACTIONS": "Left wing tank pylon - monitor fuel"
+    },
+    "SMS STA5 DEGR": {
+        "TEST Number": "107",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Station 5 Remote interface degraded",
+        "SYMPTOMS": "Command not executed correctly",
+        "CORRECTIVE ACTIONS": "Centreline - monitor fuel"
+    },
+    "SMS STA5 FAIL": {
+        "TEST Number": "91",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Station 5 Remote interface failed",
+        "SYMPTOMS": "Station operation inhibited",
+        "CORRECTIVE ACTIONS": "Centreline - monitor fuel"
+    },
+    "SMS STA6 DEGR": {
+        "TEST Number": "108",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Station 6 Remote interface degraded",
+        "SYMPTOMS": "Command not executed correctly",
+        "CORRECTIVE ACTIONS": "Right wing tank pylon - monitor fuel"
+    },
+    "SMS STA6 FAIL": {
+        "TEST Number": "92",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Station 6 Remote interface failed",
+        "SYMPTOMS": "Station operation inhibited",
+        "CORRECTIVE ACTIONS": "Right wing tank pylon - monitor fuel"
+    },
+    "SMS STA7 DEGR": {
+        "TEST Number": "109",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Station 7 Remote interface degraded",
+        "SYMPTOMS": "Command not executed correctly",
+        "CORRECTIVE ACTIONS": "Discontinue offensive operations"
+    },
+    "SMS STA7 FAIL": {
+        "TEST Number": "93",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Station 7 Remote interface failed",
+        "SYMPTOMS": "Station operation inhibited",
+        "CORRECTIVE ACTIONS": "Discontinue offensive operations"
+    },
+    "SMS STA8 DEGR": {
+        "TEST Number": "110",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Station 8 Remote interface degraded",
+        "SYMPTOMS": "Command not executed correctly",
+        "CORRECTIVE ACTIONS": "Pilot discretion"
+    },
+    "SMS STA8 FAIL": {
+        "TEST Number": "94",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Station 8 Remote interface failed",
+        "SYMPTOMS": "Station operation inhibited",
+        "CORRECTIVE ACTIONS": "Pilot discretion"
+    },
+    "SMS STA9 DEGR": {
+        "TEST Number": "111",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Station 9 Remote interface degraded",
+        "SYMPTOMS": "Command not executed correctly",
+        "CORRECTIVE ACTIONS": "Right wingtip pylon malfunction, pilot discretion"
+    },
+    "SMS STA9 FAIL": {
+        "TEST Number": "95",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Station 9 Remote interface failed",
+        "SYMPTOMS": "Station operation inhibited",
+        "CORRECTIVE ACTIONS": "Right wingtip pylon malfunction, pilot discretion"
+    },
+    "TGP BUS FAIL": {
+        "TEST Number": "3",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "TGP system failure",
+        "SYMPTOMS": "Total loss of TGP function",
+        "CORRECTIVE ACTIONS": "Discontinue TGP operations"
+    },
+    "TGP HADF FAIL 9": {
+        "TEST Number": "9",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Maverick Controller fail",
+        "SYMPTOMS": "No AGM-65 hand-off at Boresight",
+        "CORRECTIVE ACTIONS": "Reattempt boresight procedure or use VIS mode"
+    },
+    "TGP HADF FAIL 10": {
+        "TEST Number": "10",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Maverick Controller out of tolerance",
+        "SYMPTOMS": "Boresight error",
+        "CORRECTIVE ACTIONS": "Reattempt boresight procedure or use VIS mode"
+    },
+    "TGP HADF FAIL 18": {
+        "TEST Number": "18",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Missile Boresight Correlator fail",
+        "SYMPTOMS": "No AGM-65 hand-off",
+        "CORRECTIVE ACTIONS": "Cancel sensor lock and reattempt handoff or use VIS mode"
+    },
+    "TGP HADF FAIL 19": {
+        "TEST Number": "19",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Negligible Missile Boresight Correlator capability degradation",
+        "SYMPTOMS": "Hand-off error",
+        "CORRECTIVE ACTIONS": "Cancel sensor lock and reattempt handoff or use VIS mode"
+    },
+    "BRK PWR DEGR": {
+        "TEST Number": "N/A",
+        "Category": "AVIONICS FAULTS",
+        "CAUSE": "Single FLCS Electronic Fail",
+        "SYMPTOMS": "One FLCC branch not powered",
+        "CORRECTIVE ACTIONS": "Check which branch and set brake channel accordingly"
+    }
+}

@@ -1,0 +1,34 @@
+Hi folks!
+
+Falcon BMS includes the ability to create interactive training missions. This is accomplished by means of "training scripts." 
+These scripts are simple text files (either with a .txt or a .run extension) that are loaded with the training mission and contain the interactive training instructions. 
+This guide provides a general explanation about scripts.  A complete description about training scripts can be found on BMS-Techincal Manual, chapter 14 - Training Scripts.
+
+General:
+
+• BMS features two different kinds of script files: Manual & automatic scripts. You can use both script-types at the same time. 
+- Manual scripts have to be started by the user by checking the "Enable Training Script" checkbox which becomes available in the bottom right corner of the UI once 
+a training mission is selected. The default is OFF. Use manual scripts if you want to let the user decide, if he wants to have training scripts activated or not. 
+• Manual scripts have a .txt extension. 
+• They work just with .trn missions.
+• All functions are supported.
+
+• Automatic Scripts user will not have a possibility to enable or disable them. The automatic scripts are useful for training missions you want to make sure they are started with pre-defined conditions (e.g. specific cockpit setup). 
+• Automatic scripts have a .run extension.
+• They work with .trn and .tac missions.
+• Function support is limited (no user interaction functions available, e.g. WaitInput)
+
+• Script files must have the same file name as the mission they are created for, except the file extension, which is either .txt or .run.
+
+• In BMS most of the training missions have training scripts. These are saved in the folder  “…\Data\Campaign”
+
+• Training scripts do not work with Campaign missions. They are meant for training purposes only. However, the scripts do also work in Tactical Engagement missions. 
+
+
+Concepts:
+
+The action of the language is composed entirely of functions. There are no operators. So, each line of a script can contains one of the following things:
+• A function name followed by arguments  	-  (SetCurosr 0.0 0.95)
+• A section name 			-  (StartEngine)
+• A comment starting with // 		-  (// This script is to be used for XYZ Squadron)
+• A blank line
