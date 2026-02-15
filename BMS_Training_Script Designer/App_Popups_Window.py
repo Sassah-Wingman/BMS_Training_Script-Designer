@@ -482,34 +482,6 @@ def list_list_list_popup(title, window, listcombo1, listcombo2, list1, list2, li
     list_list_list_popup.close()
     return list_list_list_popup
 
-
-# Handle Spin type popups
-def spin_popup(title, window, list1, list2, list3, list4, script, summary):
-    layout = [[sg.Push(), sg.Text(title, font="_ 16"), sg.Push(),],
-              [sg.Input(size = (60, 1), visible = False, focus = True, font="_ 12", enable_events = True, key = "-ARGTEXT-")],
-              [sg.Spin(size = (3, 1), visible = True, focus = True, font="_ 12", wrap = True, enable_events = True, key = "-ARGNUM1-"),
-               sg.Spin(size = (3, 1), visible = True, focus = True, font="_ 12", wrap = True, enable_events = True, key = "-ARGNUM2-"),
-               sg.Spin(size = (3, 1), visible = True, focus = True, font="_ 12", wrap = True, enable_events = True, key = "-ARGNUM3-"),
-               sg.Spin(size = (3, 1), visible = False, focus = True, font="_ 12", wrap = True, enable_events = True, key = "-ARGNUM4-"),
-               sg.Spin(size = (3, 1), visible = False, focus = True, font="_ 12", wrap = True, enable_events = True, key = "-ARGNUM5-"),
-               sg.Spin(size = (3, 1), visible = False, focus = True, font="_ 12", wrap = True, enable_events = True, key = "-ARGNUM6-")],
-              [sg.Push(), sg.Button("Add",  size = (15, 2), font = "_ 12", disabled = True, key="-ADDNUM-"), sg.Button("Cancel",  size = (15, 2), font = "_ 12", key="-CANCELNUM-"), sg.Push()]]
-    
-    text_popup = sg.Window("Text", layout, disable_minimize = True, no_titlebar = True, grab_anywhere = True, modal=True, finalize=True, element_padding = 10, keep_on_top = True)
-    
-    while True:
-        event, values = text_popup.read()
-        if event in (sg.WIN_CLOSED, "-CANCELNUM-"):
-            break
-        if event == "-ARGNUM1-":
-            text_popup["-ADDNUM1-"].update(disabled = False)
-        elif event == "-ADDNUM-":
-            text_popup.close()
-            App_Functions.Handle_Function(window, list1, list2, list3, list4, script, summary, values["-ARGNUM1-"], values["-ARGNUM1-"], None)
-
-    text_popup.close()
-    return text_popup
-
 # Handle Fuel function due to its special approach
 def fuel_window(window, listfwd, listaft, listrsv, listwig, listexw, listexc, list1, list2, list3, list4, script, summary):
         
