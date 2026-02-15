@@ -31,6 +31,7 @@ def workspace_window():
     list_of_text = []
 
     #lists with values to be used in Listboxes
+    ListOfCallbacks = []
     ListOfColors = ["Red", "Yellow", "Cyan", "Magenta", "Green1", "Black", "White"]
     ListOfFont = ["Default", "Defaut and Bold", "Bigger and Bold"]
     ListOfJustification = ["Left Orientation", "Center Orientation", "Right Orientation"]
@@ -213,27 +214,27 @@ def workspace_window():
 
         #no popup windows functions
         elif event == "-BADD-" and selected == "-layclr-":
-            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "Clear\n", "Clear all elements off screen at once.", None, None, None)
+            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "Clear\n", "Clear all elements off screen at once.", None, None, None, None, None)
         elif event == "-BADD-" and selected == "-secwhl-":
-            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "While\n", "Run the commands in section while a value is TRUE.", None, None, None)
+            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "While\n", "Run the commands in section while a value is TRUE.", None, None, None, None, None)
         elif event == "-BADD-" and selected == "-secwhln-":
-            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "WhileNot\n", "Run the commands in section while a value is FALSE.", None, None, None)
+            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "WhileNot\n", "Run the commands in section while a value is FALSE.", None, None, None, None, None)
         elif event == "-BADD-" and selected == "-secend-":
-            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "EndSection\n", "End of section.", None, None, None)
+            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "EndSection\n", "End of section.", None, None, None, None, None)
         elif event == "-BADD-" and selected == "-othends-":
-            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "EndScript\n", "End of script", None, None, None)
+            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "EndScript\n", "End of script", None, None, None, None, None)
         elif event == "-BADD-" and selected == "-othent-":
-            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "EnterCritical\n", "Execute multiple commands all at once.", None, None, None)
+            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "EnterCritical\n", "Execute multiple commands all at once.", None, None, None, None, None)
         elif event == "-BADD-" and selected == "-othend-":
-            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "EndCritical\n", "Multiple commands execution terminated.", None, None, None)
+            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "EndCritical\n", "Multiple commands execution terminated.", None, None, None, None, None)
         elif event == "-BADD-" and selected == "-bolif-":
-            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "If\n", "Check if the value of last command is TRUE.", None, None, None)
+            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "If\n", "Check if the value of last command is TRUE.", None, None, None, None, None)
         elif event == "-BADD-" and selected == "-bolifn-":
-            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "IfNot\n", "Check if the value of last command is FALSE.", None, None, None)
+            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "IfNot\n", "Check if the value of last command is FALSE.", None, None, None, None, None)
         elif event == "-BADD-" and selected == "-timwow-":
-            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "WaitForNoWOW\n", "Script paused until aircraf is airborne.", None, None, None)
+            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "WaitForNoWOW\n", "Script paused until aircraf is airborne.", None, None, None, None, None)
         elif event == "-BADD-" and selected == "-othline-":
-            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "\n", " ", None, None, None)
+            App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "\n", " ", None, None, None, None, None)
         
         #section popup windows functions
         elif event == "-BPAR-" and selected == "-secname-":

@@ -36,7 +36,7 @@ def section_popup(title, window, list1, list2, list3, list4, summary):
             section_popup["-ADDSEC-"].update(disabled = False)
         if event == "-ADDSEC-":
             section_popup.close()
-            App_Functions.Handle_Function(window, list1, list2, list3, list4, values["-ARGSEC-"], summary, " ", values["-ARGSEC-"], None)
+            App_Functions.Handle_Function(window, list1, list2, list3, list4, values["-ARGSEC-"], summary, " ", values["-ARGSEC-"], None, None, None)
 
     section_popup.close()
     return section_popup
@@ -57,7 +57,7 @@ def input_popup(title, window, list1, list2, list3, list4, script, summary):
             text_popup["-ADDTXT-"].update(disabled = False)
         elif event == "-ADDTXT-":
             text_popup.close()
-            App_Functions.Handle_Function(window, list1, list2, list3, list4, script, summary, values["-ARGTEXT-"], values["-ARGTEXT-"], None)
+            App_Functions.Handle_Function(window, list1, list2, list3, list4, script, summary, values["-ARGTEXT-"], values["-ARGTEXT-"], None, None, None)
 
     text_popup.close()
     return text_popup
@@ -193,7 +193,7 @@ def list_popup(title, window, listcombo1, list1, list2, list3, list4, script, su
                         item_selected = values["-ARGLIST-"]
 
                 list_popup.close()
-                App_Functions.Handle_Function(window, list1, list2, list3, list4, script, summary, item_selected, values["-ARGLIST-"], None)
+                App_Functions.Handle_Function(window, list1, list2, list3, list4, script, summary, item_selected, values["-ARGLIST-"], None, None, None)
 
         list_popup.close()
         return list_popup
@@ -227,7 +227,7 @@ def list_input_popup(title, window, listcombo1, list1, list2, list3, list4, scri
         #handle add button event to add the selected item to the script
         if event == "-ADDLISTINP-":
             App_Functions.clear_image(window, graph1, graph2, graph3, graph4, graph5, graph6, graph7, graph8)   #must be the first call to do before closing the popup
-            App_Functions.Handle_Function(window, list1, list2, list3, list4, script, summary, values["-ARGLISTINP-"], values["-ARGINPT-"], None)
+            App_Functions.Handle_Function(window, list1, list2, list3, list4, script, summary, values["-ARGLISTINP-"], values["-ARGINPT-"], None, None, None)
             list_input_popup.close()
 
     list_input_popup.close()
@@ -360,12 +360,13 @@ def list_list_popup(title, window, listcombo1, listcombo2, list1, list2, list3, 
                     sg.popup_ok("The new pan til position is out of bounds!", font = "_ 12", title="Warning!", keep_on_top=True)
 
             App_Functions.clear_image(window, graph1, graph2, graph3, graph4, graph5, graph6, graph7, graph8)   #must be the first call to do before closing the popup
-            App_Functions.Handle_Function(window, list1, list2, list3, list4, script, summary, item_selected1, item_selected2, None)
+            App_Functions.Handle_Function(window, list1, list2, list3, list4, script, summary, item_selected1, item_selected2, None, None, None)
             list_list_popup.close()
 
     list_list_popup.close()
     return list_list_popup
 
+# Handle Multiple Lists popups
 def list_list_list_popup(title, window, listcombo1, listcombo2, list1, list2, list3, list4, script, summary, width1):
     graph1 = None
     graph2 = None
@@ -376,9 +377,9 @@ def list_list_list_popup(title, window, listcombo1, listcombo2, list1, list2, li
  
 
     layout = [[sg.Push(), sg.Text(text = "Set the cursor coordinate first!", font = "_ 16", text_color = "Red"), sg.Push()],
-              [sg.Push(), sg.Text(text = "Last coordinate (X,Y):", font = "_ 12", text_color = "white"),
-               sg.Text(x, font = "_ 12", text_color = "Yellow"),
-               sg.Text(y, font = "_ 12", text_color = "Yellow"), sg.Push()],
+              [sg.Push(), sg.Text(text = "Last coordinate (X,Y):", font = "_ 12", text_color = "white",  visible = True, key = "-coordtitle-"),
+               sg.Text(x, font = "_ 12", text_color = "Yellow", visible = True, key = "-coordx-"),
+               sg.Text(y, font = "_ 12", text_color = "Yellow",  visible = True, key = "-coordy-"), sg.Push()],
               [sg.Push(), sg.Text(text = "Time in seconds", font = "_ 12", text_color = "white"), sg.Push()],
               [sg.Push(), sg.Combo(values = listcombo1, size = (width1, 1), readonly = True, enable_events = True, key = "-ARGTIME-"), sg.Push()],
               [sg.Push(), sg.Text(text = " ", font = "_ 12", text_color = "white", key = "-TXT1-"), sg.Push()],
@@ -401,33 +402,36 @@ def list_list_list_popup(title, window, listcombo1, listcombo2, list1, list2, li
             App_Functions.clear_image(window, graph1, graph2, graph3, graph4, graph5, graph6, graph7, graph8)
             break
 
-        # configure the popup window based on the script selected 
+        # configure the popup window based on the selected function 
         if event == "-ARGTIME-" and script == "Oval":
             print("Graph drawn with Radius1:", x, "Radius2:", y)
             list_list_list_popup["-ARGX1-"].update(disabled = False)
-            list_list_list_popup["-ARGY1-"].update(disabled = False)
             list_list_list_popup["-ARGX2-"].update(visible = False)
             list_list_list_popup["-ARGY2-"].update(visible = False)
             list_list_list_popup["-TXT2-"].update("Set the radius value for a circle")
-            list_list_list_popup["-TXT3-"].update("Set the secundary value for an oval")
         elif event == "-ARGTIME-" and script == "Line":
             print("List of Coordinates/Degrees:", listcombo1)
+            list_list_list_popup["-coordtitle-"].update(visible = False)
+            list_list_list_popup["-coordx-"].update(visible = False)
+            list_list_list_popup["-coordy-"].update(visible = False)
             list_list_list_popup["-ARGX1-"].update(disabled = False)
-            list_list_list_popup["-ARGY1-"].update(visible = True)
-            list_list_list_popup["-ARGX2-"].update(visible = True)
-            list_list_list_popup["-ARGY2-"].update(visible = True)
-            list_list_list_popup["-TXT2-"].update("Set the coordinates X and Y where the line starts")
+            list_list_list_popup["-ARGY1-"].update(disabled = False)
+            list_list_list_popup["-TXT1-"].update("Set the coordinates X and Y where the line starts")
             list_list_list_popup["-TXT4-"].update("Set the coordinates X and Y where the line ends")
         elif event == "-ARGTIME-" and script == "WaitMouse":
             print("List of Coordinates/Degrees:", listcombo1)
+            print("-------------------------------------------------------------------------------------------------")
+            App_Functions.get_callback_path()
             list_list_list_popup["-ARGX1-"].update(disabled = False)
             list_list_list_popup["-TXT2-"].update("Set the coordinates X and Y where the mouse should hover")
-            list_list_list_popup["-TXT4-"].update("Set the distance from this coordinate to enable mouse hover")
-            list_list_list_popup["-ARGY2-"].update(visible = True)
+            list_list_list_popup["-TXT3-"].update("Set the distance from this coordinate to enable mouse hover")
+            list_list_list_popup["-ARGY3-"].update(visible = True)
         
         #draw the circle and oval on graph
         if event == "-ARGX1-" and not values["-ARGY1-"] and script == "Oval":
             print("Graph Circle with Radius1:", values["-ARGX1-"])
+            list_list_list_popup["-ARGY1-"].update(disabled = False)
+            list_list_list_popup["-TXT3-"].update("Set the secundary value for an oval")
             window["-graph-"].delete_figure(graph1)
             graph1 = window["-graph-"].draw_circle(center_location = (x, y), radius = float(values["-ARGX1-"]), line_color = "Red", line_width = 1)
             list_list_list_popup["-ADDMULT-"].update(disabled = False)
@@ -453,30 +457,54 @@ def list_list_list_popup(title, window, listcombo1, listcombo2, list1, list2, li
             list_list_list_popup["-ADDMULT-"].update(disabled = False)
 
         #Draw the line on graph
-        
-        
+        if event == "-ARGX1-" and values["-ARGY1-"] and script == "Line":
+            print("Line starts X:", values["-ARGX1-"])
+            list_list_list_popup["-ARGX2-"].update(disabled = False)
+            list_list_list_popup["-ARGY2-"].update(disabled = False)
+            window["-graph-"].delete_figure(graph1)
+            window["-graph-"].delete_figure(graph3)
+            graph1 = window["-graph-"].draw_text(text = "+", location = (float(values["-ARGX1-"]), float(values["-ARGY1-"])), color = "Green", font = "arial 20")
+        elif event == "-ARGY1-" and values["-ARGX1-"] and script == "Line":
+            print("Line starts Y:", values["-ARGY1-"])
+            list_list_list_popup["-ARGX2-"].update(disabled = False)
+            list_list_list_popup["-ARGY2-"].update(disabled = False)
+            window["-graph-"].delete_figure(graph1)
+            window["-graph-"].delete_figure(graph3)
+            graph1 = window["-graph-"].draw_text(text = "+", location = (float(values["-ARGX1-"]), float(values["-ARGY1-"])), color = "Green", font = "arial 20")
+        elif event == "-ARGX2-" and values["-ARGY2-"] and script == "Line":
+            print("Line finishes X:", values["-ARGX2-"])
+            window["-graph-"].delete_figure(graph2)
+            window["-graph-"].delete_figure(graph3)
+            graph2 = window["-graph-"].draw_text(text = "+", location = (float(values["-ARGX2-"]), float(values["-ARGY2-"])), color = "Red", font = "arial 20")
+            graph3 = window["-graph-"].draw_line(point_from = (float(values["-ARGX1-"]), float(values["-ARGY1-"])), point_to = (float(values["-ARGX2-"]), float(values["-ARGY2-"])), color = "Yellow", width = 2)
+        elif event == "-ARGY2-" and values["-ARGX2-"] and script == "Line":
+            print("Line finishes Y:", values["-ARGY2-"])
+            window["-graph-"].delete_figure(graph2)
+            window["-graph-"].delete_figure(graph3)
+            graph2 = window["-graph-"].draw_text(text = "+", location = (float(values["-ARGX2-"]), float(values["-ARGY2-"])), color = "Red", font = "arial 20")
+            graph3 = window["-graph-"].draw_line(point_from = (float(values["-ARGX1-"]), float(values["-ARGY1-"])), point_to = (float(values["-ARGX2-"]), float(values["-ARGY2-"])), color = "Yellow", width = 2)
+            list_list_list_popup["-ADDMULT-"].update(disabled = False)
 
 
-
+        #handle add button event to add the selected item to the script
         if event == "-ADDMULT-":
             if script == "Oval":
                 item_selected1 = values["-ARGTIME-"]
                 item_selected2 = values["-ARGX1-"]
                 item_selected3 = values["-ARGY1-"]
             elif script == "Line":
-                item_selected1 = values["-ARGLIST1-"]
-                item_selected2 = values["-ARGLIST2-"]
-                window["-cposx-"].update(X)
-                window["-cposy-"].update(Y)
-                if X < -1.0 or X > 1.0 or Y < -1.0 or Y > 1.0:
-                    sg.popup_ok("The new cursor position is out of bounds!", font = "_ 12", title="Warning!", keep_on_top=True)
+                item_selected1 = values["-ARGTIME-"]
+                item_selected2 = values["-ARGX1-"]
+                item_selected3 = values["-ARGY1-"]
+                item_selected4 = values["-ARGX2-"]
+                item_selected5 = values["-ARGY2-"]
             elif script == "WaitMouse": 
                 item_selected1 = App_Functions.get_radians(listcombo1.index(values["-ARGLIST1-"]))
                 item_selected2 = App_Functions.get_radians(listcombo2.index(values["-ARGLIST2-"]))
          
 
             App_Functions.clear_image(window, graph1, graph2, graph3, graph4, graph5, graph6, graph7, graph8)   #must be the first call to do before closing the popup
-            App_Functions.Handle_Function(window, list1, list2, list3, list4, script, summary, item_selected1, item_selected2, item_selected3)
+            App_Functions.Handle_Function(window, list1, list2, list3, list4, script, summary, item_selected1, item_selected2, item_selected3, item_selected4, item_selected5)
             list_list_list_popup.close()
 
     list_list_list_popup.close()
@@ -591,7 +619,7 @@ def fuel_window(window, listfwd, listaft, listrsv, listwig, listexw, listexc, li
             totalfuelstr = str(totalfuel)
             print("Total fuel to be added to the script: ", totalfuelstr)
             #pass information back to main window
-            App_Functions.Handle_Function(window, list1, list2, list3, list4, script, summary, item_selected, totalfuelstr, None)
+            App_Functions.Handle_Function(window, list1, list2, list3, list4, script, summary, item_selected, totalfuelstr, None, None, None)
             fuel_window.close()
 
     fuel_window.close()

@@ -2,6 +2,7 @@ from operator import index
 
 import FreeSimpleGUI as sg
 from math import radians
+import App_Open_Window
 import os
 from pathlib import Path
 import winreg
@@ -61,6 +62,12 @@ def get_list_of_installed_bms_path():
     print("=>functions/path: - regKeys: ", list_of_installed_bms.keys())
     print("=>functions/path: - regValues: ", list_of_installed_bms.values())
     return list_of_installed_bms
+
+def get_callback_path():
+    callback_path = sg.user_settings_get_entry("-setcallbackpath-")
+    print("=>functions/path: - callback path: ", callback_path)
+    return callback_path
+
 
 #convert folder name from list to string
 def get_folder (_folder):
@@ -183,39 +190,6 @@ def clear_description(window):
     window["-desc-"].update(" ")
     window["-synt-"].update(" ")
     window["-exem-"].update(" ")
-  
-#configure SCRIPT and SUMMARY input
-def Handle_Function(window, list1, list2, list3, list4, script, summary, arg1, arg1a, arg2):
-        print(">>Handle Functions arg1: ", arg1)
-        print(">>Handle Functions arg1a: ", arg1a)
-        print(">>Handle Functions arg2: ", arg2)
-        #clears and appends the new script and summary to the lists
-        list1.clear()
-        list1.append(script)
-        list2.clear()
-        list2.append(summary)
-        #arg1 = 1st script argument and arg1a = 1st for summary only
-        if arg1 != None:
-            if script == "Print" or script == "WaitPrint" or script == "SetCursor" or script == "MoveCursor" or script == "SetPanTilt" or script == "MovePanTilt":
-                list1.append(arg1)
-                list1.append(arg1a)
-                list2.append(arg1)
-                list2.append(arg1a)
-            else:
-                list1.append(arg1)
-                list2.append(arg1a)
-        if arg2 != None:
-            list1.append(arg2)
-            list2.append(arg2)
-        #sets the SCRIPT section
-        list3.append(list1.copy())
-        window["-SCRIPT-"].update(values = list3)
-        #sets the SUMMARY section
-        list4 = " ".join(list2)
-        window["-FILE_TEXT-"].write(list4 + "\n")
-        #create logs
-        print(">>Handle Functions - script: ", list3)
-        print(">>Handle Functions - summary: ", list4)
 
 def Draw_Lines(window, values):
     list_temp = []
@@ -237,10 +211,47 @@ def Draw_Lines(window, values):
 def Get_Callbacks():
         pass
 
-
 #convert list of integers to list of strings
 def get_string_integer(_list):
     list_string = list(map(str, _list))
     return list_string
 
+#configure SCRIPT and SUMMARY input
+def Handle_Function(window, list1, list2, list3, list4, script, summary, arg1, arg1a, arg2, arg3, arg4):
+        print(">>Handle Functions arg1: ", arg1)
+        print(">>Handle Functions arg1a: ", arg1a)
+        print(">>Handle Functions arg2: ", arg2)
+        #clears and appends the new script and summary to the lists
+        list1.clear()
+        list1.append(script)
+        list2.clear()
+        list2.append(summary)
+        #arg1 = 1st script argument and arg1a = 1st for summary only
+        if arg1 != None:
+            if script == "Print" or script == "WaitPrint" or script == "SetCursor" or script == "MoveCursor" or script == "SetPanTilt" or script == "MovePanTilt" or script == "Oval" or script == "Line":
+                list1.append(arg1)
+                list1.append(arg1a)
+                list2.append(arg1)
+                list2.append(arg1a)
+            else:
+                list1.append(arg1)
+                list2.append(arg1a)
+        if arg2 != None:
+            list1.append(arg2)
+            list2.append(arg2)
+        if arg3 != None:
+            list1.append(arg3)
+            list2.append(arg3)
+        if arg4 != None:
+            list1.append(arg4)
+            list2.append(arg4)
+        #sets the SCRIPT section
+        list3.append(list1.copy())
+        window["-SCRIPT-"].update(values = list3)
+        #sets the SUMMARY section
+        list4 = " ".join(list2)
+        window["-FILE_TEXT-"].write(list4 + "\n")
+        #create logs
+        print(">>Handle Functions - script: ", list3)
+        print(">>Handle Functions - summary: ", list4)
 
