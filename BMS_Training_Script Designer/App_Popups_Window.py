@@ -4,6 +4,7 @@ from tkinter import Y
 import FreeSimpleGUI as sg
 import App_Functions
 import App_Images
+import App_Workspace_Window
 
 #graph global variables
 graph1 = None
@@ -16,6 +17,7 @@ graph7 = None
 graph8 = None
 x = 0.0
 y = 0.0
+counter = 0
 
 # Functions to handle popup windows for adding functions to the training script
 
@@ -239,8 +241,9 @@ def list_list_popup(title, window, listcombo1, listcombo2, list1, list2, list3, 
     graph4 = None
     global x 
     global y 
-    X = 0.0
-    Y = 0.0
+    global counter
+    # X = 0.0
+    # Y = 0.0
 
     layout = [[sg.Push(),sg.Text(text = "Horizontal Axis (x)", font = "_ 12", text_color = "white"),
                sg.Push(),sg.Text(text = "Vertical Axis (y)", font = "_ 12", text_color = "white"), sg.Push()],
@@ -268,23 +271,19 @@ def list_list_popup(title, window, listcombo1, listcombo2, list1, list2, list3, 
             print ("X:", values["-ARGLIST1-"], "Y:", values["-ARGLIST2-"])
             window["-graph-"].delete_figure(graph1)
             window["-graph-"].delete_figure(graph2)
-            x = float(values["-ARGLIST1-"])
-            y = float(values["-ARGLIST2-"])
-            window["-cposx-"].update(values["-ARGLIST1-"])
-            window["-cposy-"].update(values["-ARGLIST2-"])
-            graph1 = window["-graph-"].draw_text(text = "O", location = (x, y), color = "white", font = "arial 10 bold")
-            graph2 = window["-graph-"].draw_text(text = "+", location = (x, y), color = "Magenta", font = "arial 16")
+            tempx = float(values["-ARGLIST1-"])
+            tempy = float(values["-ARGLIST2-"])
+            graph1 = window["-graph-"].draw_text(text = "O", location = (tempx, tempy), color = "white", font = "arial 10 bold")
+            graph2 = window["-graph-"].draw_text(text = "+", location = (tempx, tempy), color = "Magenta", font = "arial 16")
             list_list_popup["-ADDCOORD-"].update(disabled = False)
         elif event == "-ARGLIST1-" and values["-ARGLIST2-"] and script == "SetCursor":
             print ("X:", values["-ARGLIST1-"], "Y:", values["-ARGLIST2-"])
             window["-graph-"].delete_figure(graph1)
             window["-graph-"].delete_figure(graph2)
-            x = float(values["-ARGLIST1-"])
-            y = float(values["-ARGLIST2-"])
-            window["-cposx-"].update(values["-ARGLIST1-"])
-            window["-cposy-"].update(values["-ARGLIST2-"])
-            graph1 = window["-graph-"].draw_text(text = "O", location = (x, y), color = "white", font = "arial 10 bold")
-            graph2 = window["-graph-"].draw_text(text = "+", location = (x, y), color = "Magenta", font = "arial 16")
+            tempx = float(values["-ARGLIST1-"])
+            tempy = float(values["-ARGLIST2-"])
+            graph1 = window["-graph-"].draw_text(text = "O", location = (tempx, tempy), color = "white", font = "arial 10 bold")
+            graph2 = window["-graph-"].draw_text(text = "+", location = (tempx, tempy), color = "Magenta", font = "arial 16")
         #draw move cursor position on graph            
         
         if event == "-ARGLIST2-" and values["-ARGLIST1-"] and script == "MoveCursor":
@@ -322,22 +321,35 @@ def list_list_popup(title, window, listcombo1, listcombo2, list1, list2, list3, 
             print ("Radian X:", values["-ARGLIST1-"], "Radian Y:", values["-ARGLIST2-"])
             deltax = float(App_Functions.get_radians(listcombo1.index(values["-ARGLIST1-"])))
             deltay = float(App_Functions.get_radians(listcombo2.index(values["-ARGLIST2-"])))
-            X = round(deltax + x, 2)
-            Y = round(deltay + y, 2)
+            X = round(deltax + tempx, 2)
+            Y = round(deltay + tempy, 2)
         list_list_popup["-ADDCOORD-"].update(disabled = False)
-       
         #handle add button event to add the selected item to the script
         if event == "-ADDCOORD-":
             if script == "SetCursor":
                 item_selected1 = values["-ARGLIST1-"]
                 item_selected2 = values["-ARGLIST2-"]
+                x = float(values["-ARGLIST1-"])
+                y = float(values["-ARGLIST2-"])
+                window["-cposx-"].update(x)
+                window["-cposy-"].update(y)
+                window["-graph-"].draw_text(text = "O", location = (x, y), color = "Red", font = "arial 10 bold")
+                window["-graph-"].draw_text(text = "+", location = (x, y), color = "Cyan", font = "arial 16")
+                window["-graph-"].draw_text(text = counter, location = (x+0.03, y+0.03), color = "Cyan", font = "arial 12")
+                counter = counter + 1
             elif script == "MoveCursor":
                 item_selected1 = values["-ARGLIST1-"]
                 item_selected2 = values["-ARGLIST2-"]
                 window["-cposx-"].update(X)
                 window["-cposy-"].update(Y)
+                x=X
+                y=Y
                 if X < -1.0 or X > 1.0 or Y < -1.0 or Y > 1.0:
                     sg.popup_ok("The new cursor position is out of bounds!", font = "_ 12", title="Warning!", keep_on_top=True)
+                window["-graph-"].draw_text(text = "O", location = (x, y), color = "Red", font = "arial 10 bold")
+                window["-graph-"].draw_text(text = "+", location = (x, y), color = "Cyan", font = "arial 16")
+                window["-graph-"].draw_text(text = counter, location = (x+0.03, y+0.03), color = "Cyan", font = "arial 12")
+                counter = counter + 1
             elif script == "SetPanTilt": 
                 item_selected1 = App_Functions.get_radians(listcombo1.index(values["-ARGLIST1-"]))
                 item_selected2 = App_Functions.get_radians(listcombo2.index(values["-ARGLIST2-"]))
@@ -353,6 +365,123 @@ def list_list_popup(title, window, listcombo1, listcombo2, list1, list2, list3, 
 
     list_list_popup.close()
     return list_list_popup
+
+def list_list_list_popup(title, window, listcombo1, listcombo2, list1, list2, list3, list4, script, summary, width1):
+    graph1 = None
+    graph2 = None
+    graph3 = None
+    graph4 = None
+    global x 
+    global y 
+ 
+
+    layout = [[sg.Push(), sg.Text(text = "Set the cursor coordinate first!", font = "_ 16", text_color = "Red"), sg.Push()],
+              [sg.Push(), sg.Text(text = "Last coordinate (X,Y):", font = "_ 12", text_color = "white"),
+               sg.Text(x, font = "_ 12", text_color = "Yellow"),
+               sg.Text(y, font = "_ 12", text_color = "Yellow"), sg.Push()],
+              [sg.Push(), sg.Text(text = "Time in seconds", font = "_ 12", text_color = "white"), sg.Push()],
+              [sg.Push(), sg.Combo(values = listcombo1, size = (width1, 1), readonly = True, enable_events = True, key = "-ARGTIME-"), sg.Push()],
+              [sg.Push(), sg.Text(text = " ", font = "_ 12", text_color = "white", key = "-TXT1-"), sg.Push()],
+              [sg.Push(), sg.Text(text = " ", font = "_ 12", text_color = "white", key = "-TXT2-"), sg.Push(),
+               sg.Push(), sg.Text(text = " ", font = "_ 12", text_color = "white", key = "-TXT3-"), sg.Push()],
+              [sg.Push(), sg.Combo(values = listcombo2, size = (width1, 1), readonly = True, disabled = True, enable_events = True, key = "-ARGX1-"), sg.Push(), 
+               sg.Push(), sg.Combo(values = listcombo2, size = (width1, 1), readonly = True, disabled = True, enable_events = True, key = "-ARGY1-"), sg.Push()],
+              [sg.Push(), sg.Text(text = " ", font = "_ 12", text_color = "white", key = "-TXT4-"), sg.Push()],
+              [sg.Push(), sg.Combo(values = listcombo2, size = (width1, 1), readonly = True, disabled = True, visible = True, enable_events = True, key = "-ARGX2-"), sg.Push(),
+               sg.Push(), sg.Combo(values = listcombo2, size = (width1, 1), readonly = True, disabled = True, visible = True, enable_events = True, key = "-ARGY2-"), sg.Push()],
+              [sg.Push(), sg.Button("Add", size = (15, 2), font = "_ 12", disabled = True, key="-ADDMULT-"), sg.Button("Cancel", size = (15, 2), font = "_ 12", key="-CANCELMULT-"), sg.Push()]]
+    
+    list_list_list_popup = sg.Window(title, layout, disable_minimize = True, use_custom_titlebar = True, titlebar_font = "_ 14", grab_anywhere = True, titlebar_icon = App_Images.bms_image, modal=True, finalize=True, size = (800, 500), element_padding = 10, keep_on_top = True)
+    
+
+    while True:
+        event, values = list_list_list_popup.read()
+        print("Event: ", event, "Values: ", values)
+        if event in (sg.WIN_CLOSED, "-CANCELMULT-"):
+            App_Functions.clear_image(window, graph1, graph2, graph3, graph4, graph5, graph6, graph7, graph8)
+            break
+
+        # configure the popup window based on the script selected 
+        if event == "-ARGTIME-" and script == "Oval":
+            print("Graph drawn with Radius1:", x, "Radius2:", y)
+            list_list_list_popup["-ARGX1-"].update(disabled = False)
+            list_list_list_popup["-ARGY1-"].update(disabled = False)
+            list_list_list_popup["-ARGX2-"].update(visible = False)
+            list_list_list_popup["-ARGY2-"].update(visible = False)
+            list_list_list_popup["-TXT2-"].update("Set the radius value for a circle")
+            list_list_list_popup["-TXT3-"].update("Set the secundary value for an oval")
+        elif event == "-ARGTIME-" and script == "Line":
+            print("List of Coordinates/Degrees:", listcombo1)
+            list_list_list_popup["-ARGX1-"].update(disabled = False)
+            list_list_list_popup["-ARGY1-"].update(visible = True)
+            list_list_list_popup["-ARGX2-"].update(visible = True)
+            list_list_list_popup["-ARGY2-"].update(visible = True)
+            list_list_list_popup["-TXT2-"].update("Set the coordinates X and Y where the line starts")
+            list_list_list_popup["-TXT4-"].update("Set the coordinates X and Y where the line ends")
+        elif event == "-ARGTIME-" and script == "WaitMouse":
+            print("List of Coordinates/Degrees:", listcombo1)
+            list_list_list_popup["-ARGX1-"].update(disabled = False)
+            list_list_list_popup["-TXT2-"].update("Set the coordinates X and Y where the mouse should hover")
+            list_list_list_popup["-TXT4-"].update("Set the distance from this coordinate to enable mouse hover")
+            list_list_list_popup["-ARGY2-"].update(visible = True)
+        
+        #draw the circle and oval on graph
+        if event == "-ARGX1-" and not values["-ARGY1-"] and script == "Oval":
+            print("Graph Circle with Radius1:", values["-ARGX1-"])
+            window["-graph-"].delete_figure(graph1)
+            graph1 = window["-graph-"].draw_circle(center_location = (x, y), radius = float(values["-ARGX1-"]), line_color = "Red", line_width = 1)
+            list_list_list_popup["-ADDMULT-"].update(disabled = False)
+        elif event == "-ARGY1-" and values["-ARGX1-"] and script == "Oval":
+            print("Graph Oval with Radius1:", values["-ARGX1-"], "Radius2:", values["-ARGY1-"])
+            window["-graph-"].delete_figure(graph1)
+            TOPLEFTX = (x - (float(values["-ARGX1-"])))
+            TOPLEFTY = (y + 3*float(values["-ARGY1-"]))
+            BOTTOMRIGHTX = (x + (float(values["-ARGX1-"])))
+            BOTTOMRIGHTY = (y - 3*float(values["-ARGY1-"]))
+            print("Top Left:", TOPLEFTX, TOPLEFTY, "Bottom Right:", BOTTOMRIGHTX, BOTTOMRIGHTY)
+            graph1 = window["-graph-"].draw_oval(top_left = (TOPLEFTX, TOPLEFTY), bottom_right = (BOTTOMRIGHTX, BOTTOMRIGHTY), line_color = "Red", line_width = 1)
+            list_list_list_popup["-ADDMULT-"].update(disabled = False)
+        elif event == "-ARGX1-" and values["-ARGY1-"] and script == "Oval":
+            print("Graph Oval with Radius1:", values["-ARGX1-"], "Radius2:", values["-ARGY1-"])
+            window["-graph-"].delete_figure(graph1)
+            TOPLEFTX = (x - (float(values["-ARGX1-"])))
+            TOPLEFTY = (y + 2*float(values["-ARGY1-"]))
+            BOTTOMRIGHTX = (x + (float(values["-ARGX1-"])))
+            BOTTOMRIGHTY = (y - 2*float(values["-ARGY1-"]))
+            print("Top Left:", TOPLEFTX, TOPLEFTY, "Bottom Right:", BOTTOMRIGHTX, BOTTOMRIGHTY)
+            graph1 = window["-graph-"].draw_oval(top_left = (TOPLEFTX, TOPLEFTY), bottom_right = (BOTTOMRIGHTX, BOTTOMRIGHTY), line_color = "Red", line_width = 1)
+            list_list_list_popup["-ADDMULT-"].update(disabled = False)
+
+        #Draw the line on graph
+        
+        
+
+
+
+        if event == "-ADDMULT-":
+            if script == "Oval":
+                item_selected1 = values["-ARGTIME-"]
+                item_selected2 = values["-ARGX1-"]
+                item_selected3 = values["-ARGY1-"]
+            elif script == "Line":
+                item_selected1 = values["-ARGLIST1-"]
+                item_selected2 = values["-ARGLIST2-"]
+                window["-cposx-"].update(X)
+                window["-cposy-"].update(Y)
+                if X < -1.0 or X > 1.0 or Y < -1.0 or Y > 1.0:
+                    sg.popup_ok("The new cursor position is out of bounds!", font = "_ 12", title="Warning!", keep_on_top=True)
+            elif script == "WaitMouse": 
+                item_selected1 = App_Functions.get_radians(listcombo1.index(values["-ARGLIST1-"]))
+                item_selected2 = App_Functions.get_radians(listcombo2.index(values["-ARGLIST2-"]))
+         
+
+            App_Functions.clear_image(window, graph1, graph2, graph3, graph4, graph5, graph6, graph7, graph8)   #must be the first call to do before closing the popup
+            App_Functions.Handle_Function(window, list1, list2, list3, list4, script, summary, item_selected1, item_selected2, item_selected3)
+            list_list_list_popup.close()
+
+    list_list_list_popup.close()
+    return list_list_list_popup
+
 
 # Handle Spin type popups
 def spin_popup(title, window, list1, list2, list3, list4, script, summary):

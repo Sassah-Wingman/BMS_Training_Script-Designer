@@ -14,6 +14,7 @@ ListOfFontInt = ["0", "1", "2"]
 ListOfSwitchInt = ["0", "2"]
 ListOfRadians = []
 coord_list = []
+coord_list_oval = []
 
 #create a list of all installed BMS
 def get_list_of_bms_path():
@@ -81,12 +82,84 @@ def get_file_contents (_folder, _filelist):
         #print(">>>> MYFUN/CONT - file contents: ", contents_in_file)
     return contents_in_file
 
-# def get_flatten_list(_list):
-#     flat_list = []
-#     for l in _list:
-#         flat_list.extend(l)
-#     return flat_list
+def get_flatten_list(_list):
+    flat_list = []
+    for l in _list:
+        flat_list.extend(l)
+    return flat_list
 
+def messages(window):
+    window["-DESC-"].update("test")
+
+def clear_fields(window):
+    #reset argument fields
+    window["-ARGCOMMENT-"].update(disabled = True)
+    window["-ARGLINETM-"].update(disabled = True)
+    window["-ARGLINEX1-"].update(disabled = True)
+    window["-ARGLINEY1-"].update(disabled = True)
+    window["-ARGLINEX2-"].update(disabled = True)
+    window["-ARGLINEY2-"].update(disabled = True)
+    window["-ARGOVALTM-"].update(disabled = True)
+    window["-ARGOVALX-"].update(disabled = True)
+    window["-ARGOVALY-"].update(disabled = True)
+    window["-ARGPRINTTM-"].update(disabled = True)
+    window["-ARGPRINTTX-"].update(disabled = True)
+    window["-ARGPRINTWTM-"].update(disabled = True)
+    window["-ARGPRINTWTX-"].update(disabled = True)
+    window["-ARGCURSORPX-"].update(disabled = True)
+    window["-ARGCURSORPY-"].update(disabled = True)
+    window["-SHORT1-"].update(disabled = True)
+    window["-SHORT2-"].update(disabled = True)
+    window["-ARGCURSORMX-"].update(disabled = True, value = "0.0")
+    window["-ARGCURSORMY-"].update(disabled = True)
+    window["-SHORT3-"].update(disabled = True)
+    window["-ARGFLASH-"].update(background_color = "gray", disabled = True)
+    window["-ARGFLASHT-"].update(background_color = "gray", disabled = True)
+    window["-ARGFLASHD-"].update(background_color = "gray", disabled = True)
+    window["-ARGLINEW-"].update(background_color = "gray", disabled = True)
+    window["-ARGCLEARL-"].update(disabled = True)
+    window["-ARGCOLOR-"].update(background_color = "gray", disabled = True)
+    window["-ARGCOLORT-"].update(background_color = "gray", disabled = True)
+    window["-ARGCOLORD-"].update(background_color = "gray", disabled = True)
+    window["-ARGFONT-"].update(background_color = "gray", disabled = True)
+    window["-ARGJUST-"].update(background_color = "gray", disabled = True)
+    window["-ARGCOLORB-"].update(background_color = "gray", disabled = True)
+    window["-COLORT-"].update(text = "Set the text color >>>", disabled = False)
+
+    #reset ADD buttons
+    window["-ADDCOMMENT-"].update(disabled = True, visible = False)
+    window["-ADDSPACE-"].update(disabled = True, visible = False)
+    window["-ADDCURSORP-"].update(disabled = True, visible = False)
+    window["-ADDCURSORM-"].update(disabled = True, visible = False)
+    window["-ADDCOLOR-"].update(disabled = True, visible = False)
+    window["-ADDCOLORT-"].update(disabled = True, visible = False)
+    window["-ADDCOLORD-"].update(disabled = True, visible = False)
+    window["-ADDFLASH-"].update(disabled = True, visible = False)
+    window["-ADDFLASHT-"].update(disabled = True, visible = False)
+    window["-ADDFLASHD-"].update(disabled = True, visible = False)
+    window["-ADDFONT-"].update(disabled = True, visible = False)
+    window["-ADDJUST-"].update(disabled = True, visible = False)
+    window["-ADDCOLORB-"].update(disabled = True, visible = False)
+    window["-ADDCOLORBG-"].update(disabled = True, visible = False)
+    window["-ADDLINEW-"].update(disabled = True, visible = False)
+    window["-ADDLINE-"].update(disabled = True, visible = False)
+    window["-ADDOVAL-"].update(disabled = True, visible = False)
+    window["-ADDPRINT-"].update(disabled = True, visible = False)
+    window["-ADDPRINTW-"].update(disabled = True, visible = False)
+    window["-ADDCLEAR-"].update(disabled = True, visible = False)
+    window["-ADDCLEARL-"].update(disabled = True, visible = False)
+
+    #reset description texts 
+    window["-scpt-"].update(" ")
+    window["-desc-"].update(" ")
+    window["-synt-"].update(" ")
+    window["-exem-"].update(" ")
+    window["-flashms-"].update(" ")
+    window["-flashmst-"].update(" ")
+    window["-flashmsd-"].update(" ")
+    window["-flashhex-"].update(" ")
+    window["-flashhext-"].update(" ")
+    window["-flashhexd-"].update(" ")
 
 def clear_image(window, image1, image2, image3, image4, image5, image6, image7, image8):
     try:
@@ -111,16 +184,16 @@ def get_flash_hex(index):
      print("flash func hex: ", hex_flash)
      return(hex_flash)
 
-# def get_width_float(index):
-#      print("width func index: ", index)
-#      float_width = ListOfWidthFloat[index]
-#      print("width func float: ", float_width)
-#      return(float_width)
+def get_width_float(index):
+     print("width func index: ", index)
+     float_width = ListOfWidthFloat[index]
+     print("width func float: ", float_width)
+     return(float_width)
 
-# def get_text_integer(index):
-#      value_font = ListOfFontInt[index]
-#      print("font size integer value: ", value_font)
-#      return(value_font)
+def get_text_integer(index):
+     value_font = ListOfFontInt[index]
+     print("font size integer value: ", value_font)
+     return(value_font)
 
 def get_BG_integer(index):
      value_BG = ListOfSwitchInt[index]
@@ -143,32 +216,32 @@ def get_radians(index):
     print("Radian value: ", radian_value)
     return str(radian_value)
 
-# def get_width(index):
-#     print ("width list index: ", index)
-#     if index == 0:
-#         return 0.1
-#     if index == 1:
-#         return 0.5
-#     if index == 2:
-#         return 1
-#     if index == 3:
-#         return 1
-#     if index == 4:
-#         return 2
-#     if index == 5:
-#         return 3
-#     if index == 6:
-#         return 5
-#     if index == 7:
-#         return 20
-#     if index == 8:
-#         return 40
-#     if index == 9:
-#         return 60
-#     if index == 10:
-#         return 100
-#     if index == 11:
-#         return 200
+def get_width(index):
+    print ("width list index: ", index)
+    if index == 0:
+        return 0.1
+    if index == 1:
+        return 0.5
+    if index == 2:
+        return 1
+    if index == 3:
+        return 1
+    if index == 4:
+        return 2
+    if index == 5:
+        return 3
+    if index == 6:
+        return 5
+    if index == 7:
+        return 20
+    if index == 8:
+        return 40
+    if index == 9:
+        return 60
+    if index == 10:
+        return 100
+    if index == 11:
+        return 200
 
 def make_coordinates():
     for i in range(100, -101, -1):
@@ -177,6 +250,14 @@ def make_coordinates():
         coord_list.append(formatted_value)
     print("=>functions/coord: ", coord_list)
     return coord_list
+
+def make_coordinates_oval():
+    for i in range(100, 0, -1):
+        value = i / 100.00
+        formatted_value = f"{value:.2f}"
+        coord_list_oval.append(formatted_value)
+    print("=>functions/coord: ", coord_list_oval)
+    return coord_list_oval
 
 def disable_button(window, key):
     print("Enable button: ", key)
@@ -208,7 +289,7 @@ def Handle_Function(window, list1, list2, list3, list4, script, summary, arg1, a
         list1.append(script)
         list2.clear()
         list2.append(summary)
-        #arg1 = 1st script argument and arg1a = 1st for summary
+        #arg1 = 1st script argument and arg1a = 1st for summary only
         if arg1 != None:
             if script == "Print" or script == "WaitPrint" or script == "SetCursor" or script == "MoveCursor" or script == "SetPanTilt" or script == "MovePanTilt":
                 list1.append(arg1)
@@ -275,4 +356,4 @@ def get_string_integer(_list):
     list_string = list(map(str, _list))
     return list_string
 
-    
+

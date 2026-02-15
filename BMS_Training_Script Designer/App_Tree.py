@@ -255,5 +255,17 @@ def handle_tree_selection(window, selected):
         App_Functions.enable_button(window,"-BHEL-")
         App_Functions.get_description(window, "MovePanTilt <float (x)> <float (y)>", "Offsets the current 3d view from its current position by the amounts specified by <float (x)> and <float (y)>.", "Choose how many degrees you want the view to move horizontally and vertically.", "Positive numbers move left or down. Negative numbers move right or up.")
 
+    elif selected == "-outoval-":
+        App_Functions.enable_button(window,"-BPAR-")
+        App_Functions.enable_button(window,"-BHEL-")
+        App_Functions.get_description(window, "Oval <time> <float (radius x)> <float (radius y) optional>", "Draws an oval on the screen for <time> duration at the current position of the cursor.", "Size of the oval is specified by <float (x)> and <float (y)>. If only one argument is supplied, a circle is drawn with radius specified by <float (x)>.", "Important: you must position the cursor first.")
+    elif selected == "-outline-":
+        App_Functions.enable_button(window,"-BPAR-")
+        App_Functions.enable_button(window,"-BHEL-")
+        App_Functions.get_description(window, "Line <time> <float (x1)> <float (y1)> <float (x2)> <float (y2)>", "Draws a line for <time> duration from x1, y1 to x2, y2 coordinates.", "This function is not dependent from the current cursor location.", "Lines may be used as brakets to limit formation positions.")
+    elif selected == "-intmouse-":
+        App_Functions.enable_button(window,"-BPAR-")
+        App_Functions.enable_button(window,"-BHEL-")
+        App_Functions.get_description(window, "WaitMouse <time> <float (target x)> <float (target y)> <float (distance)>", "Pauses execution of the script for <time> duration or until the mouse cursor moves to the designated coordinate.", "Set the cursor and draw and circle to help the pilot to know where to click.", "Perfect to make the pilot interact with systems or avionics.")
 
 

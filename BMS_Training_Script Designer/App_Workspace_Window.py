@@ -48,6 +48,7 @@ def workspace_window():
     ListOfFuelExtWing = App_Functions.get_string_integer(list(range(0, 2520, 4)))
     ListOfFuelExtCtr = App_Functions.get_string_integer(list(range(0, 2050, 40)))
     ListOfTimeSeconds = App_Functions.get_string_integer(list(range(1, 3601)))
+    ListOfCoordinateOval = App_Functions.make_coordinates_oval()
     ListOfCoordinate = App_Functions.make_coordinates()
     ListOfDegreesX = [f"{abs(i)} right" if i < 0
                      # Positive numbers are "left"
@@ -108,8 +109,8 @@ def workspace_window():
                                        sg.Checkbox("Show shapes.", background_color = "#64778d", checkbox_color = "#ffffff", default = False, enable_events = True,  key = "-shape-"), 
                                        sg.Checkbox("Show cockpit.", background_color = "#64778d", checkbox_color = "#ffffff", default = True, enable_events = True,  key = "-ckpt-"),
                                        sg.Text("Last cursor position in script:  ", background_color = "#64778d", text_color = ("yellow")), 
-                                       sg.Text("0.00", background_color = "#64778d", text_color = ("yellow"), key = "-cposx-"), 
-                                       sg.Text("0.00", background_color = "#64778d", text_color = ("yellow"), key = "-cposy-"),
+                                       sg.Text(App_Popups_Window.x, background_color = "#64778d", text_color = ("yellow"), key = "-cposx-"), 
+                                       sg.Text(App_Popups_Window.y, background_color = "#64778d", text_color = ("yellow"), key = "-cposy-"),
                                        sg.Text(" ", background_color = "#64778d", text_color = ("red"), key = "-limtxt-")],
                                       [sg.HorizontalSeparator(color = "#64778d")],
                                       [sg.Text("Script Function Syntax: ", background_color = "#64778d",), 
@@ -188,7 +189,7 @@ def workspace_window():
                             size = (1820, 900))
 
     ckpt_image1 = workspace_window["-graph-"].draw_image(data = App_Images.cockpit_image1, location = (-1, 1))
-    graph = workspace_window["-graph-"].draw_text(">>> Graphics not in game scale! <<<", (-0.00, 0.95), color = "Red", font = "arial 10 bold")
+    workspace_window["-graph-"].draw_text(">>> Graphics are not to scale! <<<", (-0.00, 0.95), color = "Red", font = "arial 10 bold")
 
     selected = ""
 
@@ -198,7 +199,7 @@ def workspace_window():
         event, values = workspace_window.read()
         print(">>WIN/CREATE - events: ", event)
 
-       #close application event
+        #close application event
         if event in (sg.WIN_CLOSED, "Close"):
             print(">>win/create - event: exit/close")
             break
@@ -208,6 +209,9 @@ def workspace_window():
             print("tree test")
             selected = values['-tree-'][0]
             App_Tree.handle_tree_selection(workspace_window, selected)
+
+
+        #no popup windows functions
         elif event == "-BADD-" and selected == "-layclr-":
             App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "Clear\n", "Clear all elements off screen at once.", None, None, None)
         elif event == "-BADD-" and selected == "-secwhl-":
@@ -230,12 +234,20 @@ def workspace_window():
             App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "WaitForNoWOW\n", "Script paused until aircraf is airborne.", None, None, None)
         elif event == "-BADD-" and selected == "-othline-":
             App_Functions.Handle_Function(workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "\n", " ", None, None, None)
-        elif event == "-BPAR-" and selected == "-othcom-":
-            App_Popups_Window.input_popup("Add a comment line to your script", workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "//", ">> Script commented:  ")
+        
+        #section popup windows functions
         elif event == "-BPAR-" and selected == "-secname-":
             App_Popups_Window.section_popup("Define the name of your section", workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, ">> A section has been defined:  ")
+
+        # other popup windows functions
+        elif event == "-BPAR-" and selected == "-othcom-":
+            App_Popups_Window.input_popup("Add a comment line to your script", workspace_window, list_script_temp, list_text_temp, list_of_script, list_of_text, "//", ">> Script commented:  ")
+        
+        # fuel popup window function
         elif event == "-BPAR-" and selected == "-imsfuel-":
             App_Popups_Window.fuel_window(workspace_window, ListOfFuelFoward, ListOfFuelAft,  ListOfFuelReservoir, ListOfFuelWing, ListOfFuelExtWing, ListOfFuelExtCtr, list_script_temp, list_text_temp, list_of_script, list_of_text, "SetFuel", ">> Total amount of fuel set to:  ")
+        
+        # single list popup windows functions   
         elif event == "-BPAR-" and selected == "-layall-":
             App_Popups_Window.list_popup("Choose a color for all objects", workspace_window, ListOfColors, list_script_temp, list_text_temp, list_of_script, list_of_text, "SetColor", ">> The color for all objects has been set:  ", 20)
         elif event == "-BPAR-" and selected == "-laytxt-":
@@ -270,10 +282,14 @@ def workspace_window():
             App_Popups_Window.list_popup("Set how many seconds the script will be paused in GAME time", workspace_window, ListOfTimeSeconds, list_script_temp, list_text_temp, list_of_script, list_of_text, "WaitGameTime", ">> Pause script for (GAME time seconds):  ",  10)
         elif event == "-BPAR-" and selected == "-soustop-":
             App_Popups_Window.list_popup("Set how many seconds the script will be paused", workspace_window, ListOfTimeSeconds, list_script_temp, list_text_temp, list_of_script, list_of_text, "WaitSoundStop", ">> Pause script for end of sound or seconds:  ",  10)
+        
+            # list_input popup windows functions
         elif event == "-BPAR-" and selected == "-outtxt-":
-            App_Popups_Window.list_input_popup("Set the time and text to be shown on the screen", workspace_window, ListOfTimeSeconds, list_script_temp, list_text_temp, list_of_script, list_of_text, "Print", ">>T ext shows for a period (script not holded):  ", 10)
+            App_Popups_Window.list_input_popup("Set the duration (in seconds) and text to be shown on the screen", workspace_window, ListOfTimeSeconds, list_script_temp, list_text_temp, list_of_script, list_of_text, "Print", ">> Text shows for a period (script not holded):  ", 10)
         elif event == "-BPAR-" and selected == "-outtxtw-":
-            App_Popups_Window.list_input_popup("Set the time and text to be shown on the screen", workspace_window, ListOfTimeSeconds, list_script_temp, list_text_temp, list_of_script, list_of_text, "WaitPrint", ">> Text shows for a period (script holded):  ", 10)
+            App_Popups_Window.list_input_popup("Set the duration (in seconds) and text to be shown on the screen", workspace_window, ListOfTimeSeconds, list_script_temp, list_text_temp, list_of_script, list_of_text, "WaitPrint", ">> Text shows for a period (script holded):  ", 10)
+       
+        # double lists popup windows functions
         elif event == "-BPAR-" and selected == "-cposet-":
             App_Popups_Window.list_list_popup("Define a cursor position (x, y)", workspace_window, ListOfCoordinate, ListOfCoordinate, list_script_temp, list_text_temp, list_of_script, list_of_text, "SetCursor", ">> Set cursor to position (x, y):  ", 10, 10)
         elif event == "-BPAR-" and selected == "-cpomov-":
@@ -282,7 +298,15 @@ def workspace_window():
             App_Popups_Window.list_list_popup("Set the pilot's POV position to", workspace_window, ListOfDegreesX, ListOfDegreesY, list_script_temp, list_text_temp, list_of_script, list_of_text, "SetPanTilt", ">> Pilot's POV set to (degrees):  ", 10, 10)
         elif event == "-BPAR-" and selected == "-copmove-":
             App_Popups_Window.list_list_popup("Move the pilot's POV to", workspace_window, ListOfDegreesX, ListOfDegreesY, list_script_temp, list_text_temp, list_of_script, list_of_text, "MovePanTilt", ">> Pilot's POV moved about (degrees):  ", 10, 10)
-
+ 
+        # multiple lists popup windows functions
+        elif event == "-BPAR-" and selected == "-outoval-":
+            App_Popups_Window.list_list_list_popup("Set time duration and radius size to draw a circle", workspace_window, ListOfTimeSeconds, ListOfCoordinateOval, list_script_temp, list_text_temp, list_of_script, list_of_text, "Oval", ">> Circle or Oval will be shown for a time of:  ", 10)
+        elif event == "-BPAR-" and selected == "-outline-":
+            App_Popups_Window.list_list_list_popup("Set time duration and coordinates to draw a line", workspace_window, ListOfTimeSeconds, ListOfCoordinate, list_script_temp, list_text_temp, list_of_script, list_of_text, "Line", ">> Aline will be shown for a time of:  ", 10)
+        elif event == "-BPAR-" and selected == "-intmouse-":
+            App_Popups_Window.list_list_list_popup("Set time duration and coordinates to draw a line", workspace_window, ListOfTimeSeconds, ListOfCoordinate, list_script_temp, list_text_temp, list_of_script, list_of_text, "WaitMouse", ">> Script paused until player uses its mouse as instructed:  ", 10)
+       
 
 
 
@@ -367,7 +391,359 @@ by Sassah Wingman.""", title = None, no_titlebar = True, keep_on_top = True, mod
              App_Manual.manual_comment("-argm-")
         elif event == "Functions":
             sg.popup_auto_close("Select a function before using the Help/Functions menu.", auto_close_duration = 3)
-  
+
+       
+        
+        
+        #Draw a line
+        elif event == "-LINE-":
+            list_script_temp.clear()
+            list_text_temp.clear()
+            #reset workspace layout
+            App_Functions.clear_image(workspace_window, color1, color2, color3, color4, color5, color6, color7, color8)
+            App_Functions.clear_fields(workspace_window)
+            workspace_window["-scpt-"].update("Line <time> <float (x1)> <float (y1)> <float (x2)> <float (y2)>")
+            workspace_window["-desc-"].update("Draws a line for <time> duration from x1, y1 to x2, y2 coordinates.")
+            workspace_window["-synt-"].update("Enter a time followed by x and y coordinates. Range from -1.00 to 1.00.")
+            workspace_window["-exem-"].update("This function is not dependent from the current cursor location.")
+            workspace_window["-ADDLINE-"].update(visible = True)
+            workspace_window["-ARGLINETM-"].update(disabled = False, value = " ")
+            workspace_window["-ARGLINETM-"].set_focus(force = True)
+            #configure SCRIPT and SUMMARY input
+            list_script_temp.append("Line")
+            list_text_temp.append("Draw a line: ")
+            print(">>win/create - cursorp - list functemp script: ", list_script_temp)
+            print(">>win/create - cursorp - list functemp text: ", list_text_temp)
+        #Draw an oval/circle
+        elif event == "-OVAL-":
+            list_script_temp.clear()
+            list_text_temp.clear()
+            #reset workspace layout
+            App_Functions.clear_image(workspace_window, color1, color2, color3, color4, color5, color6, color7, color8)
+            App_Functions.clear_fields(workspace_window)
+            workspace_window["-scpt-"].update("Oval <time> <float (radius x)> <float (radius y) optional>")
+            workspace_window["-desc-"].update("Draws an oval or circle for <time> duration at the current position of the cursor.")
+            workspace_window["-synt-"].update("Enter a time followed by radius value. Range from -1.00 to 1.00.")
+            workspace_window["-exem-"].update("Set the cursor position first. If only one argument is supplied, then a circle is drawn.")
+            workspace_window["-ADDOVAL-"].update(visible = True)
+            workspace_window["-ARGOVALTM-"].update(disabled = False, value = " ")
+            workspace_window["-ARGOVALTM-"].set_focus(force = True)
+            #configure SCRIPT and SUMMARY input
+            list_script_temp.append("Oval")
+            list_text_temp.append("Draw an oval/circle: ")
+            print(">>win/create - cursorp - list functemp script: ", list_script_temp)
+            print(">>win/create - cursorp - list functemp text: ", list_text_temp)
+
+
+
+
+        elif event == "-SHORT1-":
+            is_a_floatx = float("0.0")
+            is_a_floaty = float("0.0")
+            App_Functions.clear_image(workspace_window, color1, color2, color3, color4, color5, color6, color7, color8)
+            color2 = workspace_window["-graph-"].draw_rectangle((is_a_floatx - 0.01, is_a_floaty + 0.02), (is_a_floatx + 0.01, is_a_floaty - 0.02), fill_color = "yellow", line_color = "magenta")  
+            color1 = workspace_window["-graph-"].draw_text("+", (is_a_floatx, is_a_floaty), color = "blue", font = "arial 12")
+            workspace_window["-cposx-"].update(is_a_floatx)
+            workspace_window["-cposy-"].update(is_a_floaty)
+            workspace_window["-ARGCURSORPX-"].update(is_a_floatx)
+            workspace_window["-ARGCURSORPY-"].update(is_a_floaty)
+            workspace_window["-ADDCURSORP-"].update(disabled = False)
+            posx = App_Functions.global_coordinatex(values["-ARGCURSORPX-"], values["-ARGCURSORMX-"])
+            posy = App_Functions.global_coordinatey(values["-ARGCURSORPY-"], values["-ARGCURSORMY-"])
+            print("float test shortcut1 posx & posy: ", is_a_floatx, is_a_floaty)
+        elif event == "-SHORT2-":
+            is_a_floatx = float("-0.98")
+            is_a_floaty = float("0.08")
+            App_Functions.clear_image(workspace_window, color1, color2, color3, color4, color5, color6, color7, color8)
+            color2 = workspace_window["-graph-"].draw_rectangle((is_a_floatx - 0.01, is_a_floaty + 0.02), (is_a_floatx + 0.01, is_a_floaty - 0.02), fill_color = "yellow", line_color = "magenta")  
+            color1 = workspace_window["-graph-"].draw_text("+", (is_a_floatx, is_a_floaty), color = "blue", font = "arial 12")
+            workspace_window["-cposx-"].update(is_a_floatx)
+            workspace_window["-cposy-"].update(is_a_floaty)
+            workspace_window["-ARGCURSORPX-"].update(is_a_floatx)
+            workspace_window["-ARGCURSORPY-"].update(is_a_floaty)
+            workspace_window["-ADDCURSORP-"].update(disabled = False)
+            posx = App_Functions.global_coordinatex(values["-ARGCURSORPX-"], values["-ARGCURSORMX-"])
+            posy = App_Functions.global_coordinatey(values["-ARGCURSORPY-"], values["-ARGCURSORMY-"])
+            print("float test shortcut2 posx & posy: ", is_a_floatx, is_a_floaty)
+            
+       
+                
+                #edit color
+        elif event == "-ARGCOLOR-" and values["-ARGCOLOR-"] in ListOfColors:
+            print(">>win/create - combo COLORT: ", values["-ARGCOLORT-"])
+            workspace_window["-ADDCOLOR-"].update(disabled = False)
+            color1 = workspace_window["-graph-"].draw_text("This is the color you picked!", (-0.75, -0.08), color = values["-ARGCOLOR-"], font = "arial 8 bold")
+            color2 = workspace_window["-graph-"].draw_line((-0.80, -0.80), (-0.60, -0.60), color = values["-ARGCOLOR-"], width = 1)
+            color3 = workspace_window["-graph-"].draw_line((-0.80, -0.70), (-0.60, -0.50), color = values["-ARGCOLOR-"], width = 2)
+            color4 = workspace_window["-graph-"].draw_line((-0.80, -0.60), (-0.60, -0.40), color = values["-ARGCOLOR-"], width = 3)
+            color5 = workspace_window["-graph-"].draw_line((-0.80, -0.50), (-0.60, -0.30), color = values["-ARGCOLOR-"], width = 4)
+            color6 = workspace_window["-graph-"].draw_circle((0.40, 0.60), radius = 0.15, line_color = values["-ARGCOLOR-"], line_width = 2)
+            color7 = workspace_window["-graph-"].draw_circle((0.40, 0.60), radius = 0.10, line_color = values["-ARGCOLOR-"], line_width = 1)
+            color8 = workspace_window["-graph-"].draw_oval((0.50, -0.50), (0.25, -0.25), line_color = values["-ARGCOLOR-"], line_width = 2)
+        #edit text color
+        elif event == "-ARGCOLORT-" and values["-ARGCOLORT-"] in ListOfColors:
+            print(">>win/create - combo COLORT: ", values["-ARGCOLORT-"])
+            workspace_window["-ADDCOLORT-"].update(disabled = False)
+            color1 = workspace_window["-graph-"].draw_text("This is the color of your text!", (-0.95, -0.08), color = values["-ARGCOLORT-"],text_location = alignleft, font = "arial 8 bold")
+        #edit draw color
+        elif event == "-ARGCOLORD-" and values["-ARGCOLORD-"] in ListOfColors:
+            print(">>win/create - combo COLORT: ", values["-ARGCOLORD-"])
+            workspace_window["-ADDCOLORD-"].update(disabled = False)
+            color2 = workspace_window["-graph-"].draw_line((-0.80, -0.80), (-0.60, -0.60), color = values["-ARGCOLORD-"], width = 1)
+            color3 = workspace_window["-graph-"].draw_line((-0.80, -0.70), (-0.60, -0.50), color = values["-ARGCOLORD-"], width = 2)
+            color4 = workspace_window["-graph-"].draw_line((-0.80, -0.60), (-0.60, -0.40), color = values["-ARGCOLORD-"], width = 3)
+            color5 = workspace_window["-graph-"].draw_line((-0.80, -0.50), (-0.60, -0.30), color = values["-ARGCOLORD-"], width = 4)
+            color6 = workspace_window["-graph-"].draw_circle((0.40, 0.60), radius = 0.15, line_color = values["-ARGCOLORD-"], line_width = 2)
+            color7 = workspace_window["-graph-"].draw_circle((0.40, 0.60), radius = 0.10, line_color = values["-ARGCOLORD-"], line_width = 1)
+            color8 = workspace_window["-graph-"].draw_oval((0.50, -0.50), (0.25, -0.25), line_color = values["-ARGCOLORD-"], line_width = 2)
+        #edit text justification
+        elif event == "-ARGJUST-":
+            print(">>win/create - combo justification: ", values["-ARGJUST-"])
+            workspace_window["-ADDJUST-"].update(disabled = False)
+            App_Functions.clear_image(workspace_window, color1, color2, color3, color4, color5, color6, color7, color8)
+            if values["-ARGJUST-"] == ListOfJustification[0]:
+                print(">>win/create - combo justification index 0: ", ListOfFont[0])
+                color1 = workspace_window["-graph-"].draw_text("Left justified text!", (-0.95, -0.08), color = "yellow", text_location = alignleft, font = "arial 8 bold")
+            elif values["-ARGJUST-"]== ListOfJustification[1]:
+                print(">>win/create - combo justification index 1: ", ListOfFont[1])
+                color1 = workspace_window["-graph-"].draw_text("Center justified text!", (-0.65, -0.08), color = "yellow", text_location = aligncenter, font = "arial 8 bold")
+            elif values["-ARGJUST-"] == ListOfJustification[2]:
+                print(">>win/create - combo justification index 2: ", ListOfFont[2])
+                color1 = workspace_window["-graph-"].draw_text("Right justified text!", (-0.35, -0.08), color = "yellow", text_location = alignright, font = "arial 8 bold")
+        #edit boxed text color
+        elif event == "-ARGCOLORB-" and values["-ARGCOLORB-"] in ListOfColors:   
+            print(">>win/create - combo COLORB: ", values["-ARGCOLORB-"])
+            workspace_window["-ARGCOLORT-"].update(disabled = False, background_color = "#ffffff")
+            workspace_window["-COLORT-"].update(text = "Test a text over background >>>", disabled = True)
+            workspace_window["-ADDCOLORB-"].update(disabled = False)
+            color2 = workspace_window["-graph-"].draw_rectangle((-0.98, -0.05), (-0.40, -0.11), fill_color = values["-ARGCOLORB-"], line_color = values["-ARGCOLORB-"]) 
+        # turn boxed text color on and off
+        elif event == "-ARGCOLORBG-":
+            print(">>win/create - button bg: ", values["-ARGCOLORBG-"])
+            workspace_window["-ADDCOLORBG-"].update(disabled = False)
+        # define line width
+        elif event == "-ARGLINEW-":
+            print(">>win/create - Line width: ", values["-ARGLINEW-"])
+            workspace_window["-ADDLINEW-"].update(disabled = False)
+            App_Functions.clear_image(workspace_window, color1, color2, color3, color4, color5, color6, color7, color8)
+            color1 = workspace_window["-graph-"].draw_line((-0.50, -0.50), (0.50, -0.50), color = "red", width = App_Functions.get_width(ListOfWidth.index(values["-ARGLINEW-"])))
+
+
+        # draw a line
+        elif event == "-ARGLINETM-" and values["-ARGLINETM-"]:
+            try:
+                #check if argument is an integer
+                is_a_int = int(values["-ARGLINETM-"])
+                if App_Functions.check_value(is_a_int, "-ARGLINETM-", workspace_window):
+                    print("win/create - Line time - test is an int:", is_a_int)
+                    workspace_window["-ARGLINEX1-"].update(disabled = False, value = " ")
+            except:
+                if len(values["-ARGLINETM-"]) == 1: 
+                    continue
+                workspace_window["-ARGLINETM-"].update(values["-ARGLINETM-"][:-1])  
+        # enable draw a line arguments
+        elif event == "-ARGLINEX1-" and values["-ARGLINEX1-"]:
+            try:
+                #check if argument is an integer
+                is_a_floatx1 = float(values["-ARGLINEX1-"])
+                if App_Functions.check_value(is_a_floatx1, "-ARGLINEX1-", workspace_window):
+                    print("win/create - Line x1 - test is an float:", is_a_floatx1)
+                    workspace_window["-ARGLINEY1-"].update(disabled = False, value = " ")
+            except:
+                if len(values["-ARGLINEX1-"]) == 1 and values["-ARGLINEX1-"][0] == "-": 
+                    continue
+                workspace_window["-ARGLINEX1-"].update(values["-ARGLINEX1-"][:-1])  
+        elif event == "-ARGLINEY1-" and values["-ARGLINEY1-"]:
+            try:
+                #check if argument is an integer
+                is_a_floaty1 = float(values["-ARGLINEY1-"])
+                if App_Functions.check_value(is_a_floaty1, "-ARGLINEY1-", workspace_window):
+                    print("win/create - Line y1 - test is an float:", is_a_floaty1)
+                    workspace_window["-ARGLINEX2-"].update(disabled = False, value = " ")
+            except:
+                if len(values["-ARGLINEY1-"]) == 1 and values["-ARGLINEY1-"][0] == "-": 
+                    continue
+                workspace_window["-ARGLINEY1-"].update(values["-ARGLINEY1-"][:-1])  #slice the list starting from index 0 to the end
+        elif event == "-ARGLINEX2-" and values["-ARGLINEX2-"]:
+            try:
+                #check if argument is an integer
+                is_a_floatx2 = float(values["-ARGLINEX2-"])
+                if App_Functions.check_value(is_a_floatx2, "-ARGLINEX2-", workspace_window):
+                    print("win/create - Line x2 - test is an float:", is_a_floatx2)
+                    workspace_window["-ARGLINEY2-"].update(disabled = False, value = " ")
+            except:
+                if len(values["-ARGLINEX2-"]) == 1 and values["-ARGLINEX2-"][0] == "-": 
+                    continue
+                workspace_window["-ARGLINEX2-"].update(values["-ARGLINEX2-"][:-1])
+        elif event == "-ARGLINEY2-" and values["-ARGLINEY2-"]:
+            try:
+                #check if argument is an integer
+                is_a_floaty2 = float(values["-ARGLINEY2-"])
+                if App_Functions.check_value(is_a_floaty2, "-ARGLINEY2-", workspace_window):
+                    print("win/create - Line y2 - test all floats:", is_a_floatx1, is_a_floaty1, is_a_floatx2, is_a_floaty2)
+                    App_Functions.clear_image(workspace_window, color1, color2, color3, color4, color5, color6, color7, color8)
+                    color2 = workspace_window["-graph-"].draw_line((is_a_floatx1, is_a_floaty1), (is_a_floatx2, is_a_floaty2), color = "magenta", width = 2)            
+                    workspace_window["-ADDLINE-"].update(disabled = False)
+            except:
+                if len(values["-ARGLINEY2-"]) == 1 and values["-ARGLINEY2-"][0] == "-": 
+                    continue
+                workspace_window["-ARGLINEY2-"].update(values["-ARGLINEY2-"][:-1])
+
+
+
+
+        # draw an oval/circle
+        elif event == "-ARGOVALTM-" and values["-ARGOVALTM-"]:
+            try:
+                #check if argument is an integer
+                is_a_int = int(values["-ARGOVALTM-"])
+                if App_Functions.check_value(is_a_int, "-ARGOVALTM-", workspace_window):
+                    print("win/create - oval time - test is a int:", is_a_int)
+                    workspace_window["-ARGOVALX-"].update(disabled = False, value = " ")
+            except:
+                if len(values["-ARGOVALTM-"]) == 1: 
+                    continue
+                workspace_window["-ARGOVALTM-"].update(values["-ARGOVALTM-"][:-1])  
+        # enable draw an oval arguments
+        elif event == "-ARGOVALX-" and values["-ARGOVALX-"]:
+            try:
+                #check if argument is a float
+                is_a_floatx = float(values["-ARGOVALX-"])
+                if App_Functions.check_value(is_a_floatx, "-ARGOVALX-", workspace_window):
+                    print("win/create - Oval x - test is a float:", is_a_floatx)
+                    App_Functions.clear_image(workspace_window, color1, color2, color3, color4, color5, color6, color7, color8)
+                    #color2 = workspace_window["-graph-"].draw_circle((0.5, 0.5), line_color = "magenta", line_width = 2)            
+                    workspace_window["-ARGOVALY-"].update(disabled = False, value = " ")
+                    workspace_window["-ADDOVAL-"].update(disabled = False)
+            except:
+                if len(values["-ARGOVALX-"]) == 1 and values["-ARGOVALX-"][0] == "-": 
+                    continue
+                workspace_window["-ARGOVALX-"].update(values["-ARGOVALX-"][:-1])
+        elif event == "-ARGOVALY-" and values["-ARGOVALY-"]:
+            try:
+                #check if argument is a float
+                is_a_floaty = float(values["-ARGOVALY-"])
+                if App_Functions.check_value(is_a_floaty, "-ARGOVALY-", workspace_window):
+                    print("win/create - Oval y - test all floats:", is_a_floatx, is_a_floaty)
+                    App_Functions.clear_image(workspace_window, color1, color2, color3, color4, color5, color6, color7, color8)
+                    #color3 = workspace_window["-graph-"].draw_oval((0.5, 0.5), line_color = "magenta", line_width = 2)            
+            except:
+                if len(values["-ARGOVALY-"]) == 1 and values["-ARGOVALY-"][0] == "-": 
+                    continue
+                workspace_window["-ARGOVALY-"].update(values["-ARGOVALY-"][:-1])
+
+         
+            
+
+       
+
+ 
+        elif event == "-ADDLINE-":
+            #sets the SCRIPT section
+            list_script_temp.append(values["-ARGLINETM-"])
+            list_script_temp.append(float(values["-ARGLINEX1-"]))
+            list_script_temp.append(float(values["-ARGLINEY1-"]))
+            list_script_temp.append(float(values["-ARGLINEX2-"]))
+            list_script_temp.append(float(values["-ARGLINEY2-"]))
+            list_of_script.append(list_script_temp.copy())
+            workspace_window["-SCRIPT-"].update(values = list_of_script)
+            #sets the SUMMARY section
+            list_text_temp.append(values["-ARGLINETM-"])
+            list_text_temp.append(values["-ARGLINEX1-"])
+            list_text_temp.append(values["-ARGLINEY1-"])
+            list_text_temp.append(values["-ARGLINEX2-"])
+            list_text_temp.append(values["-ARGLINEY2-"])
+            list_of_text = " ".join(list_text_temp)
+            workspace_window["-FILE_TEXT-"].write(list_of_text + "\n")
+            print(">>win/create - cursorp - list of script: ", list_of_script)
+            print(">>win/create - cursorp - list of text: ", list_of_text)
+            #clear layout enviroment
+            workspace_window["-CURSORP-"].reset_group()
+            App_Functions.clear_image(workspace_window, color1, color2, color3, color4, color5, color6, color7, color8)
+            App_Functions.clear_fields(workspace_window)
+        elif event == "-ADDOVAL-":
+            #sets the SCRIPT section
+            list_script_temp.append(values["-ARGOVALTM-"])
+            list_script_temp.append(values["-ARGOVALX-"])
+            try:
+                if len(values["-ARGOVALY-"]) != 0:
+                    list_script_temp.append(values["-ARGOVALY-"])
+            except:
+                continue
+            list_of_script.append(list_script_temp.copy())
+            workspace_window["-SCRIPT-"].update(values = list_of_script)
+            #sets the SUMMARY section
+            list_text_temp.append(values["-ARGOVALTM-"])
+            list_text_temp.append(values["-ARGOVALX-"])
+            list_text_temp.append(values["-ARGOVALY-"])
+            list_of_text = " ".join(list_text_temp)
+            workspace_window["-FILE_TEXT-"].write(list_of_text + "\n")
+            print(">>win/create - cursorp - list of script: ", list_of_script)
+            print(">>win/create - cursorp - list of text: ", list_of_text)
+            #clear layout enviroment
+            workspace_window["-CURSORP-"].reset_group()
+            App_Functions.clear_image(workspace_window, color1, color2, color3, color4, color5, color6, color7, color8)
+            App_Functions.clear_fields(workspace_window) 
+
+
+
+        elif event == "-ADDCLEAR-":
+            #sets the SCRIPT section
+            list_of_script.append(list_script_temp.copy())
+            workspace_window["-SCRIPT-"].update(values = list_of_script)
+            #sets the SUMMARY section
+            list_of_text = " ".join(list_text_temp)
+            workspace_window["-FILE_TEXT-"].write(list_of_text + "\n")
+            print(">>win/create - clear - list of script: ", list_of_script)
+            print(">>win/create - clear - list of text: ", list_of_text)
+            #clear layout enviroment
+            workspace_window["-CLEAR-"].reset_group()
+            App_Functions.clear_fields(workspace_window)
+        elif event == "-ADDCLEARL-":
+            print("ARGCLEARL value: ", (values["-ARGCLEARL-"]))
+            #sets the SCRIPT section
+            try:
+                if len(values["-ARGCLEARL-"]) != 0:
+                    list_script_temp.append(values["-ARGCLEARL-"])
+            except:
+                continue
+            list_of_script.append(list_script_temp.copy())
+            workspace_window["-SCRIPT-"].update(values = list_of_script)
+            #sets the SUMMARY section
+            try:
+                if len(values["-ARGCLEARL-"]) != 0:
+                    list_text_temp.append(values["-ARGCLEARL-"])
+            except:
+                continue
+            list_of_text = " ".join(list_text_temp)
+            workspace_window["-FILE_TEXT-"].write(list_of_text + "\n")
+            print(">>win/create - font size - list of script: ", list_of_script)
+            print(">>win/create - font size - list of text: ", list_of_text)
+            #clear layout enviroment
+            workspace_window["-CLEAR-"].reset_group()
+            App_Functions.clear_fields(workspace_window)
+        elif event == "-A-":
+            print ("add test SPIN: ", values["-ARGA-"], values["-ARGB-"])
+            #sets the SCRIPT section
+            list_script_temp.append(str(values["-ARGA-"]))
+            list_script_temp.append(str(values["-ARGB-"]))
+            list_of_script.append(list_script_temp.copy())
+            workspace_window["-SCRIPT-"].update(values = list_of_script)
+            #sets the SUMMARY section
+            list_text_temp.append(str(values["-ARGA-"]))
+            list_text_temp.append(str(values["-ARGB-"]))
+            list_of_text = " ".join(list_text_temp)
+            workspace_window["-FILE_TEXT-"].write(list_of_text + "\n")
+            print(">>win/create - cursorp - list of script: ", list_of_script)
+            print(">>win/create - cursorp - list of text: ", list_of_text)
+            #clear layout enviroment
+            workspace_window["-CURSORP-"].reset_group()
+            App_Functions.clear_image(workspace_window, color1, color2, color3, color4, color5, color6, color7, color8)
+            App_Functions.clear_fields(workspace_window)
+     
+
+       
+ 
        
         
         if event == "-grid-":
@@ -417,7 +793,7 @@ by Sassah Wingman.""", title = None, no_titlebar = True, keep_on_top = True, mod
                 workspace_window["-graph-"].delete_figure(ckpt_image1)
                 workspace_window["-grid-"].update(False)
                 ckpt_image1 = workspace_window["-graph-"].draw_image(data = App_Images.cockpit_image1, location = (-1, 1))
-                graph = workspace_window["-graph-"].draw_text(">>> Graphics not in game scale! <<<", (-0.00, 0.95), color = "Red", font = "arial 10 bold")
+                graph = workspace_window["-graph-"].draw_text(">>> Graphics not to scale! <<<", (-0.00, 0.95), color = "Red", font = "arial 10 bold")
                 print(">>win/create - cockpit image id:", ckpt_image1)
             else:
                 workspace_window["-graph-"].delete_figure(ckpt_image1)
